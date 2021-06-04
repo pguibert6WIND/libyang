@@ -277,6 +277,7 @@ if(ENABLE_STATIC)
     set(CMAKE_EXE_LINK_DYNAMIC_C_FLAGS)       # remove -Wl,-Bdynamic
     set(CMAKE_EXE_LINK_DYNAMIC_CXX_FLAGS)
     add_library(yang STATIC ${libsrc} ${compatsrc})
+    set_property(TARGET yang PROPERTY POSITION_INDEPENDENT_CODE ON)
 else(ENABLE_STATIC)
     set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
     add_library(yangobj OBJECT ${libsrc} ${compatsrc})
