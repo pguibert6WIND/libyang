@@ -223,6 +223,9 @@ plugins_insert(enum LYPLG type, const void *recs)
 static void
 lyplg_close_cb(void *handle)
 {
+#ifdef STATIC
+    return;
+#endif /* STATIC */
     dlclose(handle);
 }
 
@@ -264,6 +267,10 @@ plugins_load(void *dlhandler, const char *pathname, enum LYPLG type)
     const void *plugins;
     uint32_t *version;
 
+#ifdef STATIC
+    return LY_ESYS;
+#endif /* STATIC */
+
     /* type plugin */
     version = dlsym(dlhandler, plugins_load_info[type].apiver_var);
     if (version) {
@@ -295,6 +302,10 @@ plugins_load_module(const char *pathname)
     LY_ERR ret = LY_SUCCESS;
     void *dlhandler;
     uint32_t types_count = 0, extensions_count = 0;
+
+#ifdef STATIC
+    return LY_ESYS;
+#endif /* STATIC */
 
     dlerror();    /* Clear any existing error */
 

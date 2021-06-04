@@ -277,7 +277,7 @@ if(ENABLE_STATIC)
     set(CMAKE_EXE_LINK_DYNAMIC_C_FLAGS)       # remove -Wl,-Bdynamic
     set(CMAKE_EXE_LINK_DYNAMIC_CXX_FLAGS)
     add_library(yang STATIC ${libsrc} ${compatsrc})
-else()
+else(ENABLE_STATIC)
     set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
     add_library(yangobj OBJECT ${libsrc} ${compatsrc})
     add_library(yang SHARED $<TARGET_OBJECTS:yangobj>)
@@ -286,7 +286,7 @@ else()
     target_link_libraries(yang ${CMAKE_DL_LIBS})
 
     set_target_properties(yangobj PROPERTIES COMPILE_FLAGS "-fvisibility=hidden")
-endif()
+endif(ENABLE_STATIC)
 
 set_target_properties(yang PROPERTIES VERSION ${LIBYANG_SOVERSION_FULL} SOVERSION ${LIBYANG_SOVERSION})
 
@@ -298,9 +298,9 @@ set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
 find_package(Threads REQUIRED)
 if(ENABLE_STATIC)
     target_link_libraries(yang -Wl,--whole-archive ${CMAKE_THREAD_LIBS_INIT} -Wl,--no-whole-archive)
-else()
+else(ENABLE_STATIC)
     target_link_libraries(yang ${CMAKE_THREAD_LIBS_INIT})
-endif()
+endif(ENABLE_STATIC)
 
 # find PCRE2 library
 unset(PCRE2_LIBRARY CACHE)
